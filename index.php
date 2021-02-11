@@ -1,14 +1,21 @@
 <?php
-require __DIR__ . '/vendor/autoload.php';
 
-use Cowsayphp\Farm;
+/**
+ * @file
+ * The PHP page that serves all page requests on a Drupal installation.
+ *
+ * The routines here dispatch control to the appropriate handler, which then
+ * prints the appropriate page.
+ *
+ * All Drupal code is released under the GNU General Public License.
+ * See COPYRIGHT.txt and LICENSE.txt.
+ */
 
-header('Content-Type: text/plain');
+/**
+ * Root directory of Drupal installation.
+ */
+define('DRUPAL_ROOT', getcwd());
 
-$text = "Set a message by adding ?message=<message here> to the URL";
-if(isset($_GET['message']) && $_GET['message'] != '') {
-	$text = htmlspecialchars($_GET['message']);
-}
-
-$cow = Farm::create(\Cowsayphp\Farm\Cow::class);
-echo $cow->say($text);
+require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
+drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
+menu_execute_active_handler();
